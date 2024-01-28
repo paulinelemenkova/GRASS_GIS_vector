@@ -213,7 +213,12 @@ v.import input=/Users/polinalemenkova/grassdata/Burundi_Landsat/ne_10m_roads.shp
     output=Burundi_urban_areas extent=region
 #v.in.ogr input=/Users/polinalemenkova/grassdata/Burundi_Landsat/ne_10m_urban_areas.shp output=Burundi_urbans -o --overwrite
 
+v.import input=/Users/polinalemenkova/grassdata/Burundi_Landsat/bdi_gc_adg.shp
+    output=Burundi_LCT extent=region --overwrite
+# v.in.ogr input=/Users/polinalemenkova/grassdata/Burundi/bdi_gc_adg.shp output=Burundi_LCT
+
 # v.info Burundi_cities
+db.describe -c Burundi_LCT
 db.describe -c Burundi_cities
 db.describe -c Burundi_lakes
 db.describe -c Burundi_rivers
@@ -267,3 +272,24 @@ g.region vector=world_cities w=-53324 e=345915 n=-203953 s=-596415
 
 v.clip -r input=world_countries output=Burundi_border --overwrite
 v.clip -r input=/Users/polinalemenkova/grassdata/Burundi_Landsat/PERMANENT/vector/world_cities output=Burundi_cities
+
+# display LCT
+d.mon wx0
+d.rast shaded_relief
+d.vect map=Burundi_LCT display=shape type=area -c
+
+d.vect map=Burundi_cities display=shape type=point color=black fill_color=yellow width=1 attribute_column=NAME font=sans,14 label_color=black icon=basic/circle size=8
+d.vect map=Burundi_border display=shape type=area color=white fill_color=none width=3 attribute_column=ADMIN label_color=black font=sans,28
+d.vect map=Burundi_lakes display=shape type=area color=white fill_color=blue width=1 attribute_column=name label_color=white
+d.vect map=Burundi_rivers display=shape type=line color=blue fill_color=none width=2 attribute_column=name label_color=blue
+#d.vect map=Burundi_urbans display=shape type=area color=black fill_color=brown width=2 attribute_column=name label_color=blue
+d.grid -g size=00:30:00 color=red width=0.1 fontsize=10 text_color=blue
+d.text text="Tanganyika" color=white size=1.2 font="LucidaGrande" linespacing=0.7
+d.text text="Lake" color=white size=1.2 font="LucidaGrande" linespacing=0.7
+d.text text="Kivu" color=white size=1.2 font="LucidaGrande" linespacing=0.7
+d.text text="Lake" color=white size=1.2 font="LucidaGrande" linespacing=0.7
+d.text text="Burundi" color=black size=1.2 font="LucidaGrande" linespacing=0.7 bgcolor=247:220:150
+d.text text="Rwanda" color=black size=1.2 font="LucidaGrande" linespacing=0.7 bgcolor=247:220:150
+d.text text="Tanzania" color=black size=1.2 font="LucidaGrande" linespacing=0.7 bgcolor=247:220:150
+d.text text="D.R.Congo" color=black size=1.2 font="LucidaGrande" linespacing=0.7 bgcolor=247:220:150
+d.out.file output=Burundi_LCC format=jpg --overwrite
